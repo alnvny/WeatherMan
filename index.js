@@ -3,8 +3,6 @@ var bodyParser = require('body-parser');
 var express = require('express');
 var app = express();
 
-app.set('port',5000);
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -33,6 +31,6 @@ function weatherForecastPost(req, res, next) {
   });
 }
 
-app.listen(app.get('port'), function() {
-    console.log('Node app is running at localhost:' + app.get('port'));
+app.listen(process.env.PORT || 5000, function() {
+    console.log('Node app is running at :' + process.env.PORT);
 });
