@@ -10,9 +10,8 @@ Date.prototype.addHours = function(h) {
     return this;
 }
 
-var weatherForecastPost = function(req, res, next) {
-
-    var getLocation = req.body.location;
+var weatherForecastPost = function(req, res) {
+    var getLocation = req.params.location;
     var getCurrentDateTime = new Date();
 
     if (cacheManager && cacheManager[getLocation]) {
@@ -24,7 +23,7 @@ var weatherForecastPost = function(req, res, next) {
     }
 
     var weatherForecastOptions = {
-        url: 'http://api.worldweatheronline.com/premium/v1/weather.ashx?key=74d3c6ee3b234b5197e40418171811&q=' + req.body.location + '&format=json&num_of_days=1&tp=24',
+        url: 'http://api.worldweatheronline.com/premium/v1/weather.ashx?key=74d3c6ee3b234b5197e40418171811&q=' + req.params.location + '&format=json&num_of_days=1&tp=24',
         headers: { 'Content-Type': 'application/json' }
     };
     request.get(weatherForecastOptions, function(error, response, body) {
@@ -58,7 +57,7 @@ function createWeatherForecastResponse(currentWeatherDetails){
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.post('/getWeatherForecast', weatherForecastPost);
+app.get('/getWeatherForecast/:location', weatherForecastPost);
 
 app.listen(process.env.PORT || 5000, function() {
     console.log('app is running at :' + process.env.PORT);
