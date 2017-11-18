@@ -10,8 +10,6 @@ Date.prototype.addHours = function(h) {
     return this;
 }
 
-var counter = 0;
-
 var weatherForecastPost = function(req, res, next) {
 
     var getLocation = req.body.location;
@@ -21,14 +19,10 @@ var weatherForecastPost = function(req, res, next) {
         var getThreeHoursaddedTime = cacheManager[getLocation].timestamp;
         getThreeHoursaddedTime = getThreeHoursaddedTime.addHours(3);
         if (getCurrentDateTime <= getThreeHoursaddedTime) {
-            counter = counter +1;
-            console.log(counter);
             return res.send(cacheManager[getLocation].weatherDetails);
         }
-    } else {
-        cacheManager[getLocation] = {}
-        cacheManager[getLocation].timestamp = getCurrentDateTime;
     }
+
     var weatherForecastOptions = {
         url: 'http://api.worldweatheronline.com/premium/v1/weather.ashx?key=74d3c6ee3b234b5197e40418171811&q=' + req.body.location + '&format=json&num_of_days=1&tp=24',
         headers: { 'Content-Type': 'application/json' }
@@ -36,6 +30,8 @@ var weatherForecastPost = function(req, res, next) {
     request.get(weatherForecastOptions, function(error, response, body) {
         var bodyData = body ? JSON.parse(body) : {};
         if (response.statusCode === 200 && bodyData.data && !bodyData.data.error) {
+            cacheManager[getLocation] = {}
+            cacheManager[getLocation].timestamp = getCurrentDateTime;
             cacheManager[getLocation].weatherDetails = createWeatherForecastResponse(bodyData.data.weather[0]);
             res.send(cacheManager[getLocation].weatherDetails);
         } else {
