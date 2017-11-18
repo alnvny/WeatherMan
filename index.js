@@ -10,6 +10,8 @@ Date.prototype.addHours = function(h) {
     return this;
 }
 
+var counter = 0;
+
 var weatherForecastPost = function(req, res, next) {
 
     var getLocation = req.body.location;
@@ -19,11 +21,13 @@ var weatherForecastPost = function(req, res, next) {
         var getThreeHoursaddedTime = cacheManager[getLocation].timestamp;
         getThreeHoursaddedTime = getThreeHoursaddedTime.addHours(3);
         if (getCurrentDateTime <= getThreeHoursaddedTime) {
+            counter = counter +1;
+            console.log(counter);
             return res.send(cacheManager[getLocation].weatherDetails);
         }
     } else {
         cacheManager[getLocation] = {}
-        cacheManager[getLocation].timestamp = new Date();
+        cacheManager[getLocation].timestamp = getCurrentDateTime;
     }
     var weatherForecastOptions = {
         url: 'http://api.worldweatheronline.com/premium/v1/weather.ashx?key=74d3c6ee3b234b5197e40418171811&q=' + req.body.location + '&format=json&num_of_days=1&tp=24',
@@ -31,26 +35,28 @@ var weatherForecastPost = function(req, res, next) {
     };
     request.get(weatherForecastOptions, function(error, response, body) {
         var bodyData = body ? JSON.parse(body) : {};
-        if (!error && response.statusCode === 200) {
-            var weatherUpdates = {};
-            var currentWeather = bodyData.data.weather[0];
-            weatherUpdates.temperature = {};
-            weatherUpdates.temperature.tempC = currentWeather.hourly[0].tempC;
-            weatherUpdates.temperature.tempF = currentWeather.hourly[0].tempF;
-            weatherUpdates.wind = {};
-            weatherUpdates.wind.windspeedKmph = currentWeather.hourly[0].windspeedKmph;
-            weatherUpdates.wind.windspeedMiles = currentWeather.hourly[0].windspeedMiles;
-            weatherUpdates.precipitation = currentWeather.hourly[0].precipMM;
-            weatherUpdates.weatherIcons = currentWeather.hourly[0].weatherIconUrl;
-            weatherUpdates.sunrise = currentWeather.astronomy[0].sunrise;
-            weatherUpdates.sunset = currentWeather.astronomy[0].sunset;
-            cacheManager[getLocation].weatherDetails = weatherUpdates;
+        if (response.statusCode === 200 && bodyData.data && !bodyData.data.error) {
+            cacheManager[getLocation].weatherDetails = createWeatherForecastResponse(bodyData.data.weather[0]);
             res.send(cacheManager[getLocation].weatherDetails);
         } else {
-            console.log(bodyData.log_message);
-            res.send({ 'success': false, 'message': bodyData.log_message });
+            res.send(bodyData.data);
         }
     });
+}
+
+function createWeatherForecastResponse(currentWeatherDetails){
+  var weatherUpdates = {};
+  weatherUpdates.temperature = {};
+  weatherUpdates.temperature.tempC = currentWeatherDetails.hourly[0].tempC;
+  weatherUpdates.temperature.tempF = currentWeatherDetails.hourly[0].tempF;
+  weatherUpdates.wind = {};
+  weatherUpdates.wind.windspeedKmph = currentWeatherDetails.hourly[0].windspeedKmph;
+  weatherUpdates.wind.windspeedMiles = currentWeatherDetails.hourly[0].windspeedMiles;
+  weatherUpdates.precipitation = currentWeatherDetails.hourly[0].precipMM;
+  weatherUpdates.weatherIcons = currentWeatherDetails.hourly[0].weatherIconUrl;
+  weatherUpdates.sunrise = currentWeatherDetails.astronomy[0].sunrise;
+  weatherUpdates.sunset = currentWeatherDetails.astronomy[0].sunset;
+  return weatherUpdates;
 }
 
 app.use(bodyParser.json());
