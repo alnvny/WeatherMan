@@ -1,15 +1,15 @@
-#WeatherMan-API   
-A backend service API in NodeJS that retrieves today forecast every 3 hours, for a particular city or location
+#WeatherMan - API
+###A backend service API in NodeJS that retrieves today forecast every 3 hours, for a particular city or location
 
-####**Setup & Run Application**
+###**Setup & Run Application**
     prerequisite - Make sure NodeJs is installed in your computer
 1. Clone the application code in your local folder from the git repo link,  [https://github.com/alnvny/WeatherMan.git](https://github.com/alnvny/WeatherMan.git).
-2. Open your command prompt in windows machine and go to the your cloned folder location.
-3. Execute npm install in your command promt, which will intall all the dependincies  
-4. Execute npm start to run the application.
+2. Open command prompt and select cloned folder location.
+3. Execute "npm install" in command prompt, which will intall all the dependincies  
+4. Execute "npm start" to run the application.
 
-####**API Request**
-The API request here  is a GET request and you need to pass the locaction as a parameter in the api link.
+###**API Request**
+The API request is a GET Request and you need to pass the locaction as a parameter in the API link.
 
     Request link: http://localhost:5000/getWeatherForecast/London
     (you can pass the location you request instead of London.)
@@ -22,8 +22,8 @@ Parameter : **location**
 | --- | --- | --- | --- | --- |---|
 | GET |location |location for which you need the weather forecast details| String | Yes||
 
-####**API Response**
-The Information that will be delivered by this API are listed below:
+###**API Response**
+The Information responded by the API for a **valid** location are listed below:
 
 | Element  | Description | Type | Notes |
 | --- | --- | --- | --- |
@@ -38,17 +38,24 @@ The Information that will be delivered by this API are listed below:
 |sunrise | sunrise time of the day  | String||
 |sunset | sunset time of the day  | String||
 
-####**Application Hoisting**
-The application is hoised in Heroku(cloud platform as a service) trought github.
+The Information responded by the API for a **invalid** location are listed below:
 
-    The application can be accessed in the below link,
+| Element  | Description | Type | Notes |
+| --- | --- | --- | --- |
+|error | error message for invalid lovaction | Array of error message object||
+
+###**Application Hoisted & Working API**
+The application is also hoisted in Heroku(cloud platform as a service) through github.
+
+    The live working application can be accessed in the below link, 
     https://weathermanforecast.herokuapp.com/getWeatherForecast/London
 
 Host : **https://weathermanforecast.herokuapp.com**  
 Method: **/getWeatherForecast/**  
-Parameter: **Location**
+Parameter: **Location**  
+Parameter example: **Chennai**
 
-####**Author Details**
+###**Author Details**
 Name : Gnana Allan Whinney GnanaPragasam
 
 
