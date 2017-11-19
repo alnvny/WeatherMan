@@ -1,14 +1,14 @@
-#WeatherMan - API
-###A backend service API in NodeJS that retrieves today forecast every 3 hours, for a particular city or location
+WeatherMan - API
+A backend service API in NodeJS that retrieves today forecast every 3 hours, for a particular city or location
 
-###**Setup & Run Application**
+**Setup & Run Application**
     prerequisite - Make sure NodeJs is installed in your computer
 1. Clone the application code in your local folder from the git repo link,  [https://github.com/alnvny/WeatherMan.git](https://github.com/alnvny/WeatherMan.git).
 2. Open command prompt and select cloned folder location.
 3. Execute "npm install" in command prompt, which will intall all the dependincies  
 4. Execute "npm start" to run the application.
 
-###**API Request**
+**API Request**
 The API request is a GET Request and you need to pass the locaction as a parameter in the API link.
 
     Request link: http://localhost:5000/getWeatherForecast/London
@@ -44,7 +44,7 @@ The Information responded by the API for a **invalid** location are listed below
 | --- | --- | --- | --- |
 |error | error message for invalid lovaction | Array of error message object||
 
-###**Application Hoisted & Working API**
+**Application Hoisted & Working API**
 The application is also hoisted in Heroku(cloud platform as a service) through github.
 
     The live working application can be accessed in the below link, 
@@ -55,7 +55,7 @@ Method: **/getWeatherForecast/**
 Parameter: **Location**  
 Parameter example: **Chennai**
 
-###**Author Details**
+**Author Details**
 Name : Gnana Allan Whinney GnanaPragasam
 
 
