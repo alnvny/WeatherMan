@@ -23,7 +23,7 @@ var weatherForecastPost = function(req, res) {
     }
 
     var weatherForecastOptions = {
-        url: 'http://api.worldweatheronline.com/premium/v1/weather.ashx?key=1a129c5d8b544e46801145123182801=' + req.params.location + '&format=json&num_of_days=1&tp=24',
+        url: 'http://api.worldweatheronline.com/premium/v1/weather.ashx?key=1a129c5d8b544e46801145123182801&q=' + req.params.location + '&format=json&num_of_days=1&tp=24',
         headers: { 'Content-Type': 'application/json' }
     };
     request.get(weatherForecastOptions, function(error, response, body) {
